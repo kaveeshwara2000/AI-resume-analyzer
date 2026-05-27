@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
-import { Mail, Lock, User, Sparkles, AlertCircle, ArrowRight, ShieldCheck, Database } from 'lucide-react'
+import { Mail, Lock, User, Sparkles, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react'
 
 // Common Auth Layout Sidebar Component
 const AuthSidebar = () => {
@@ -85,8 +85,19 @@ export const LoginPage = ({ darkMode, toggleDarkMode }) => {
       <AuthSidebar />
 
       {/* Right side form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
-        <div className="w-full max-w-md space-y-8 animate-fade-in">
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-5 py-10 sm:px-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
+        <div className="w-full max-w-md space-y-6 animate-fade-in">
+
+          {/* Mobile brand header */}
+          <div className="flex lg:hidden items-center space-x-2 mb-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 shadow-md">
+              <Sparkles className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-lg font-extrabold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-violet-400">
+              Resume Analyzer
+            </span>
+          </div>
+
           <div className="text-center lg:text-left">
             <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white">
               Welcome back
@@ -97,19 +108,19 @@ export const LoginPage = ({ darkMode, toggleDarkMode }) => {
           </div>
 
           {error && (
-            <div className="flex items-center space-x-2 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50 p-3 rounded-lg text-rose-600 dark:text-rose-400 text-sm">
-              <AlertCircle className="h-4 w-4 flex-shrink-0" />
+            <div className="flex items-start space-x-2 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50 p-3 rounded-lg text-rose-600 dark:text-rose-400 text-sm">
+              <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                   Username or Email
                 </label>
-                <div className="relative mt-1">
+                <div className="relative mt-1.5">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                     <User className="h-5 w-5" />
                   </div>
@@ -128,7 +139,7 @@ export const LoginPage = ({ darkMode, toggleDarkMode }) => {
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                   Password
                 </label>
-                <div className="relative mt-1">
+                <div className="relative mt-1.5">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                     <Lock className="h-5 w-5" />
                   </div>
@@ -144,24 +155,22 @@ export const LoginPage = ({ darkMode, toggleDarkMode }) => {
               </div>
             </div>
 
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 px-4 text-sm font-semibold text-white shadow-md hover:from-indigo-500 hover:to-violet-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-              >
-                {loading ? (
-                  <div className="h-5 w-5 border-2 border-white rounded-full animate-spin border-t-transparent"></div>
-                ) : (
-                  <span className="flex items-center">
-                    Sign in <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                )}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 px-4 text-sm font-semibold text-white shadow-md hover:from-indigo-500 hover:to-violet-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            >
+              {loading ? (
+                <div className="h-5 w-5 border-2 border-white rounded-full animate-spin border-t-transparent"></div>
+              ) : (
+                <span className="flex items-center">
+                  Sign in <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              )}
+            </button>
           </form>
 
-          <div className="text-center mt-6">
+          <div className="text-center">
             <p className="text-sm text-slate-600 dark:text-slate-400">
               Don't have an account?{' '}
               <Link to="/register" className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
@@ -212,8 +221,19 @@ export const RegisterPage = ({ darkMode, toggleDarkMode }) => {
       <AuthSidebar />
 
       {/* Right side form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
-        <div className="w-full max-w-md space-y-8 animate-fade-in">
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-5 py-10 sm:px-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
+        <div className="w-full max-w-md space-y-6 animate-fade-in">
+
+          {/* Mobile brand header */}
+          <div className="flex lg:hidden items-center space-x-2 mb-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 shadow-md">
+              <Sparkles className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-lg font-extrabold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-violet-400">
+              Resume Analyzer
+            </span>
+          </div>
+
           <div className="text-center lg:text-left">
             <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white">
               Create an account
@@ -224,26 +244,26 @@ export const RegisterPage = ({ darkMode, toggleDarkMode }) => {
           </div>
 
           {error && (
-            <div className="flex items-center space-x-2 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50 p-3 rounded-lg text-rose-600 dark:text-rose-400 text-sm">
-              <AlertCircle className="h-4 w-4 flex-shrink-0" />
+            <div className="flex items-start space-x-2 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50 p-3 rounded-lg text-rose-600 dark:text-rose-400 text-sm">
+              <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
           {success && (
-            <div className="flex items-center space-x-2 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/50 p-3 rounded-lg text-emerald-600 dark:text-emerald-400 text-sm">
-              <ShieldCheck className="h-4 w-4 flex-shrink-0" />
+            <div className="flex items-start space-x-2 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/50 p-3 rounded-lg text-emerald-600 dark:text-emerald-400 text-sm">
+              <ShieldCheck className="h-4 w-4 flex-shrink-0 mt-0.5" />
               <span>Account created successfully! Logging you in...</span>
             </div>
           )}
 
-          <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                   Username
                 </label>
-                <div className="relative mt-1">
+                <div className="relative mt-1.5">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                     <User className="h-5 w-5" />
                   </div>
@@ -263,7 +283,7 @@ export const RegisterPage = ({ darkMode, toggleDarkMode }) => {
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                   Email address
                 </label>
-                <div className="relative mt-1">
+                <div className="relative mt-1.5">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                     <Mail className="h-5 w-5" />
                   </div>
@@ -282,7 +302,7 @@ export const RegisterPage = ({ darkMode, toggleDarkMode }) => {
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                   Password
                 </label>
-                <div className="relative mt-1">
+                <div className="relative mt-1.5">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                     <Lock className="h-5 w-5" />
                   </div>
@@ -299,24 +319,22 @@ export const RegisterPage = ({ darkMode, toggleDarkMode }) => {
               </div>
             </div>
 
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 px-4 text-sm font-semibold text-white shadow-md hover:from-indigo-500 hover:to-violet-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-              >
-                {loading ? (
-                  <div className="h-5 w-5 border-2 border-white rounded-full animate-spin border-t-transparent"></div>
-                ) : (
-                  <span className="flex items-center">
-                    Sign up <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                )}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 px-4 text-sm font-semibold text-white shadow-md hover:from-indigo-500 hover:to-violet-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            >
+              {loading ? (
+                <div className="h-5 w-5 border-2 border-white rounded-full animate-spin border-t-transparent"></div>
+              ) : (
+                <span className="flex items-center">
+                  Sign up <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              )}
+            </button>
           </form>
 
-          <div className="text-center mt-6">
+          <div className="text-center">
             <p className="text-sm text-slate-600 dark:text-slate-400">
               Already have an account?{' '}
               <Link to="/login" className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">

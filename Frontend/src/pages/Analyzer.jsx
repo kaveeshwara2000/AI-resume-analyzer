@@ -53,10 +53,8 @@ const Analyzer = () => {
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
-    
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const droppedFile = e.dataTransfer.files[0]
-      validateAndSetFile(droppedFile)
+      validateAndSetFile(e.dataTransfer.files[0])
     }
   }
 
@@ -92,7 +90,6 @@ const Analyzer = () => {
     setLoading(true)
     setResult(null)
 
-    // Form data packaging
     const formData = new FormData()
     formData.append('file', file)
     formData.append('jobTitle', jobTitle)
@@ -100,9 +97,7 @@ const Analyzer = () => {
 
     try {
       const response = await axios.post('/api/resume/analyze', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       })
       setResult(response.data)
     } catch (err) {
@@ -122,11 +117,11 @@ const Analyzer = () => {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 flex-1 flex flex-col justify-center">
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:py-8 sm:px-6 lg:px-8 flex-1 flex flex-col">
       {/* Back to Dashboard link */}
-      <div className="mb-6">
-        <Link 
-          to="/dashboard" 
+      <div className="mb-5 sm:mb-6">
+        <Link
+          to="/dashboard"
           className="inline-flex items-center text-sm font-semibold text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 transition-colors"
         >
           <ArrowLeft className="h-4 w-4 mr-1.5" />
@@ -135,23 +130,21 @@ const Analyzer = () => {
       </div>
 
       {/* Main Workflow Card */}
-      <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800/80 dark:bg-slate-900 transition-all flex flex-col md:p-10">
-        
+      <div className="rounded-3xl border border-slate-200/80 bg-white p-5 sm:p-8 md:p-10 shadow-sm dark:border-slate-800/80 dark:bg-slate-900 transition-all flex flex-col flex-1">
+
         {/* Loading State */}
         {loading && (
-          <div className="py-16 flex flex-col items-center justify-center text-center animate-fade-in flex-1">
-            <div className="relative w-20 h-20 mb-8">
-              {/* Outer pulsing ring */}
+          <div className="py-12 sm:py-16 flex flex-col items-center justify-center text-center animate-fade-in flex-1">
+            <div className="relative w-20 h-20 mb-6 sm:mb-8 flex-shrink-0">
               <div className="absolute top-0 left-0 w-full h-full border-4 border-indigo-600/10 dark:border-indigo-400/10 rounded-full animate-ping"></div>
-              {/* Spinning primary dial */}
               <div className="absolute top-0 left-0 w-full h-full border-4 border-slate-100 dark:border-slate-800 rounded-full"></div>
               <div className="absolute top-0 left-0 w-full h-full border-4 border-indigo-600 rounded-full animate-spin border-t-transparent"></div>
               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-                <Sparkles className="h-7.5 w-7.5 text-indigo-600 animate-pulse" />
+                <Sparkles className="h-7 w-7 text-indigo-600 animate-pulse" />
               </div>
             </div>
-            <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Analyzing Resume</h2>
-            <p className="mt-3 text-base text-slate-500 dark:text-slate-400 max-w-md h-12 transition-all duration-350">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">Analyzing Resume</h2>
+            <p className="mt-3 text-sm sm:text-base text-slate-500 dark:text-slate-400 max-w-xs sm:max-w-md px-4 min-h-[48px] flex items-center justify-center transition-all duration-350">
               {loadingPhrases[phraseIndex]}
             </p>
           </div>
@@ -159,24 +152,24 @@ const Analyzer = () => {
 
         {/* Form State */}
         {!loading && !result && (
-          <div className="space-y-8 flex-1">
+          <div className="space-y-6 sm:space-y-8 flex-1">
             <div className="text-center md:text-left">
-              <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white">Run Resume Match Analyzer</h2>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Run Resume Match Analyzer</h2>
               <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
                 Upload your resume PDF and paste the job details. Our Gemini engine will perform an automated ATS compatibility check.
               </p>
             </div>
 
             {error && (
-              <div className="flex items-center space-x-2 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50 p-4 rounded-xl text-rose-600 dark:text-rose-400 text-sm">
-                <AlertCircle className="h-5 w-5 flex-shrink-0" />
+              <div className="flex items-start space-x-2 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50 p-4 rounded-xl text-rose-600 dark:text-rose-400 text-sm">
+                <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
                 <span>{error}</span>
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
                 {/* Left: Inputs */}
                 <div className="space-y-5">
                   <div>
@@ -188,7 +181,7 @@ const Analyzer = () => {
                       required
                       value={jobTitle}
                       onChange={(e) => setJobTitle(e.target.value)}
-                      className="mt-1.5 block w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:placeholder-slate-550 transition-all duration-200"
+                      className="mt-1.5 block w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500 transition-all duration-200"
                       placeholder="e.g. Senior Software Engineer"
                     />
                   </div>
@@ -199,10 +192,10 @@ const Analyzer = () => {
                     </label>
                     <textarea
                       required
-                      rows={8}
+                      rows={7}
                       value={jobDescription}
                       onChange={(e) => setJobDescription(e.target.value)}
-                      className="mt-1.5 block w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:placeholder-slate-555 transition-all duration-200 resize-none"
+                      className="mt-1.5 block w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500 transition-all duration-200 resize-none"
                       placeholder="Paste the key responsibilities, requirements, and preferred qualifications of the job..."
                     />
                   </div>
@@ -213,27 +206,27 @@ const Analyzer = () => {
                   <span className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                     Upload Resume PDF
                   </span>
-                  
+
                   <div
                     onDragEnter={handleDrag}
                     onDragOver={handleDrag}
                     onDragLeave={handleDrag}
                     onDrop={handleDrop}
-                    className={`flex-1 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center p-6 text-center transition-all ${
-                      dragActive 
-                        ? 'border-indigo-500 bg-indigo-50/30 dark:bg-indigo-950/20' 
-                        : file 
+                    className={`flex-1 min-h-[180px] border-2 border-dashed rounded-2xl flex flex-col items-center justify-center p-6 text-center transition-all ${
+                      dragActive
+                        ? 'border-indigo-500 bg-indigo-50/30 dark:bg-indigo-950/20'
+                        : file
                         ? 'border-emerald-500 bg-emerald-50/10 dark:bg-emerald-950/10'
                         : 'border-slate-200 hover:border-indigo-400 dark:border-slate-800'
                     }`}
                   >
                     {file ? (
-                      <div className="space-y-4">
+                      <div className="space-y-3">
                         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400">
                           <CheckCircle className="h-8 w-8" />
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-slate-900 dark:text-white truncate max-w-xs mx-auto">
+                          <p className="text-sm font-bold text-slate-900 dark:text-white break-all max-w-[200px] mx-auto line-clamp-2">
                             {file.name}
                           </p>
                           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -250,7 +243,7 @@ const Analyzer = () => {
                         </button>
                       </div>
                     ) : (
-                      <div className="space-y-4">
+                      <div className="space-y-3">
                         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400">
                           <Upload className="h-7 w-7" />
                         </div>
@@ -268,7 +261,7 @@ const Analyzer = () => {
                             or drag and drop here
                           </p>
                         </div>
-                        <p className="text-xs text-slate-400 dark:text-slate-550">
+                        <p className="text-xs text-slate-400 dark:text-slate-500">
                           PDF files up to 5MB are supported
                         </p>
                       </div>
@@ -285,7 +278,7 @@ const Analyzer = () => {
                   disabled={!file || !jobTitle.trim() || !jobDescription.trim()}
                   className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 space-x-2"
                 >
-                  <Sparkles className="h-4.5 w-4.5" />
+                  <Sparkles className="h-4 w-4" />
                   <span>Start AI Match Check</span>
                 </button>
               </div>
@@ -295,33 +288,33 @@ const Analyzer = () => {
 
         {/* Results State */}
         {!loading && result && (
-          <div className="space-y-8 animate-fade-in flex-1">
-            
+          <div className="space-y-6 sm:space-y-8 animate-fade-in flex-1">
+
             {/* Results Title Block */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-200/80 dark:border-slate-800/80 pb-6 space-y-4 sm:space-y-0">
-              <div>
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between border-b border-slate-200/80 dark:border-slate-800/80 pb-5 sm:pb-6 gap-4">
+              <div className="min-w-0">
                 <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
                   Analysis Report Generated
                 </span>
-                <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1 break-words">
                   {result.jobTitle}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate">
                   File: {result.resumeFileName}
                 </p>
               </div>
-              
-              <div className="flex items-center space-x-3">
+
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <button
                   onClick={resetForm}
-                  className="inline-flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 px-4 py-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200 transition-colors space-x-1.5"
+                  className="inline-flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 px-3 sm:px-4 py-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200 transition-colors space-x-1.5"
                 >
                   <RefreshCw className="h-4 w-4" />
                   <span>Analyze New</span>
                 </button>
                 <Link
                   to="/dashboard"
-                  className="inline-flex items-center justify-center rounded-xl bg-indigo-600 hover:bg-indigo-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors"
+                  className="inline-flex items-center justify-center rounded-xl bg-indigo-600 hover:bg-indigo-500 px-3 sm:px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors"
                 >
                   Dashboard
                 </Link>
@@ -329,27 +322,25 @@ const Analyzer = () => {
             </div>
 
             {/* Core Metrics Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+
               {/* ATS Score Dial Card */}
-              <div className="rounded-2xl border border-slate-200/50 bg-slate-50/50 dark:border-slate-800/50 dark:bg-slate-950/20 p-6 flex flex-col items-center justify-center text-center">
+              <div className="rounded-2xl border border-slate-200/50 bg-slate-50/50 dark:border-slate-800/50 dark:bg-slate-950/20 p-5 sm:p-6 flex flex-col items-center justify-center text-center">
                 <span className="text-sm font-bold text-slate-500 dark:text-slate-400 mb-4">ATS Resume Score</span>
-                
-                <div className="relative w-36 h-36 flex items-center justify-center">
-                  {/* SVG circular track */}
-                  <svg className="w-full h-full transform -rotate-90">
-                    <circle 
-                      cx="72" cy="72" r="60" 
+                <div className="relative w-36 h-36 flex items-center justify-center max-w-[144px]">
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 144 144">
+                    <circle
+                      cx="72" cy="72" r="60"
                       className="stroke-slate-200 dark:stroke-slate-800 fill-transparent"
-                      strokeWidth="10" 
+                      strokeWidth="10"
                     />
-                    <circle 
-                      cx="72" cy="72" r="60" 
+                    <circle
+                      cx="72" cy="72" r="60"
                       className={`fill-transparent stroke-current transition-all duration-1000 ${
                         result.resumeScore >= 80 ? 'text-emerald-500' :
                         result.resumeScore >= 60 ? 'text-amber-500' : 'text-rose-500'
                       }`}
-                      strokeWidth="10" 
+                      strokeWidth="10"
                       strokeDasharray={2 * Math.PI * 60}
                       strokeDashoffset={2 * Math.PI * 60 * (1 - result.resumeScore / 100)}
                       strokeLinecap="round"
@@ -364,7 +355,6 @@ const Analyzer = () => {
                     </span>
                   </div>
                 </div>
-                
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-4 leading-relaxed max-w-[200px]">
                   {result.resumeScore >= 80 ? 'Excellent structure and vocabulary alignment.' :
                    result.resumeScore >= 60 ? 'Satisfactory structure, but requires formatting refinement.' :
@@ -373,58 +363,54 @@ const Analyzer = () => {
               </div>
 
               {/* Match Strength Card */}
-              <div className="rounded-2xl border border-slate-200/50 bg-slate-50/50 dark:border-slate-800/50 dark:bg-slate-950/20 p-6 flex flex-col justify-center">
+              <div className="rounded-2xl border border-slate-200/50 bg-slate-50/50 dark:border-slate-800/50 dark:bg-slate-950/20 p-5 sm:p-6 flex flex-col justify-center">
                 <span className="text-sm font-bold text-slate-500 dark:text-slate-400 mb-2">Skill Match Percentage</span>
-                
                 <div className="flex items-baseline space-x-1">
                   <span className="text-5xl font-black text-indigo-600 dark:text-indigo-400">
                     {result.skillMatchPercentage}%
                   </span>
                   <span className="text-sm font-semibold text-slate-500">strength</span>
                 </div>
-
                 <div className="mt-4 w-full bg-slate-200 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
-                  <div 
+                  <div
                     className="bg-indigo-600 h-3 rounded-full transition-all duration-1000"
                     style={{ width: `${result.skillMatchPercentage}%` }}
                   ></div>
                 </div>
-
                 <div className="mt-5 space-y-2 text-xs text-slate-600 dark:text-slate-400">
                   <div className="flex items-center space-x-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 flex-shrink-0"></span>
                     <span>Matched skills: {result.matchedSkills?.length || 0} keywords</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-rose-500 flex-shrink-0"></span>
                     <span>Missing credentials: {result.missingSkills?.length || 0} critical requirements</span>
                   </div>
                 </div>
               </div>
-
             </div>
 
             {/* ATS Feedback Block */}
             <div className="space-y-2.5">
               <h3 className="text-base font-bold text-slate-950 dark:text-white">ATS Compatibility Feedback</h3>
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/40 p-5 text-sm leading-relaxed text-slate-700 dark:text-slate-350">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/40 p-4 sm:p-5 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                 {result.atsFeedback}
               </div>
             </div>
 
             {/* Core Skills Chip Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+
               {/* Matched */}
               <div className="space-y-3">
                 <h3 className="text-sm font-bold text-slate-950 dark:text-white flex items-center space-x-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
                   <span>Matched Skills ({result.matchedSkills?.length || 0})</span>
                 </h3>
                 <div className="flex flex-wrap gap-1.5">
                   {result.matchedSkills?.length > 0 ? (
                     result.matchedSkills.map((skill, index) => (
-                      <span key={index} className="inline-flex items-center px-3 py-1 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/30 transition-transform hover:scale-102">
+                      <span key={index} className="inline-flex items-center px-3 py-1 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-900/30">
                         {skill}
                       </span>
                     ))
@@ -437,13 +423,13 @@ const Analyzer = () => {
               {/* Missing */}
               <div className="space-y-3">
                 <h3 className="text-sm font-bold text-slate-950 dark:text-white flex items-center space-x-2">
-                  <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+                  <span className="w-2 h-2 rounded-full bg-rose-500 flex-shrink-0"></span>
                   <span>Missing/Weak Skills ({result.missingSkills?.length || 0})</span>
                 </h3>
                 <div className="flex flex-wrap gap-1.5">
                   {result.missingSkills?.length > 0 ? (
                     result.missingSkills.map((skill, index) => (
-                      <span key={index} className="inline-flex items-center px-3 py-1 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 dark:bg-rose-950/20 dark:text-rose-400 border border-rose-200/50 dark:border-rose-900/30 transition-transform hover:scale-102">
+                      <span key={index} className="inline-flex items-center px-3 py-1 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 dark:bg-rose-950/20 dark:text-rose-400 border border-rose-200/50 dark:border-rose-900/30">
                         {skill}
                       </span>
                     ))
@@ -452,7 +438,6 @@ const Analyzer = () => {
                   )}
                 </div>
               </div>
-
             </div>
 
             {/* Improvement Checklist */}
@@ -465,7 +450,7 @@ const Analyzer = () => {
                       <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400 font-bold text-xs">
                         {index + 1}
                       </div>
-                      <span className="text-sm text-slate-700 dark:text-slate-350 mt-0.5">{suggestion}</span>
+                      <span className="text-sm text-slate-700 dark:text-slate-300 mt-0.5">{suggestion}</span>
                     </div>
                   ))
                 ) : (
